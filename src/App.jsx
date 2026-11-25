@@ -22,12 +22,13 @@ export default function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/trips" element={<Trips />} />
           <Route path="/incidents" element={<Incidents />} />
-          <Route path="/vehicles" element={<Vehicles />} />
+          
           <Route path="/account" element={<Account />} />
 
           {/* Solo administradores y agentes */}
           <Route element={<RoleRoute roles={["ADMIN", "AGENT"]} />}>
             <Route path="/drivers" element={<Drivers />} />
+            <Route path="/vehicles" element={<Vehicles />} />
           </Route>
 
           {/* Solo administradores */}

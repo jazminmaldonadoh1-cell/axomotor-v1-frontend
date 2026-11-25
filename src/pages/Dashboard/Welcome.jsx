@@ -13,7 +13,7 @@ const ROLE_LABELS = {
 const ACCESS_CARDS = [
   { to: "/trips", icon: "trips", title: "Viajes", text: "Consulta los viajes y su recorrido.", roles: ALL_ROLES },
   { to: "/incidents", icon: "incidents", title: "Incidencias y eventos", text: "Revisa las alertas y los eventos registrados.", roles: ALL_ROLES },
-  { to: "/vehicles", icon: "vehicles", title: "Vehículos", text: "Consulta los vehículos del sistema.", roles: ALL_ROLES },
+  { to: "/vehicles", icon: "vehicles", title: "Vehículos", text: "Consulta los vehículos del sistema.", roles: ["ADMIN", "AGENT"] },
   { to: "/drivers", icon: "drivers", title: "Conductores", text: "Información de conductores y sus licencias.", roles: ["ADMIN", "AGENT"] },
   { to: "/admin", icon: "admin", title: "Administración", text: "Gestiona usuarios y conductores.", roles: ["ADMIN"] },
   { to: "/account", icon: "account", title: "Mi cuenta", text: "Actualiza tus datos y tu contraseña.", roles: ALL_ROLES },
