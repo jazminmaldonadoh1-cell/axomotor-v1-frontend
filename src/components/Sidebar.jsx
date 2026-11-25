@@ -16,7 +16,7 @@ const nav_links = [
   { to: "/trips", label: "Viajes", icon: "trips", roles: ALL_ROLES },
   { to: "/incidents", label: "Incidencias y eventos", icon: "incidents", roles: ALL_ROLES },
   { to: "/drivers", label: "Conductores", icon: "drivers", roles: ["ADMIN", "AGENT"] },
-  { to: "/vehicles", label: "Vehículos", icon: "vehicles", roles: ALL_ROLES },
+  { to: "/vehicles", label: "Vehículos", icon: "vehicles", roles:  ["ADMIN", "AGENT"] },
   { to: "/admin", label: "Administración", icon: "admin", roles: ["ADMIN"] },
   { to: "/account", label: "Cuenta", icon: "account", roles: ALL_ROLES },
 ];
