@@ -14,11 +14,17 @@ export default function UsersTab({ users, drivers, current_username, on_changed 
     [drivers]
   );
 
-  // El backend no devuelve el rol, así que se infiere
   function get_role_label(u) {
-    if (driver_user_ids.has(u.user_id)) return "Conductor";
-    if (u.username === current_username) return "Administrador";
-    return "—";
+    switch (u.role) {
+      case "ADMIN":
+        return "Administrador";
+      case "DRIVER":
+        return "Conductor";
+      case "AGENT":
+        return "Agente";
+      default:
+        return "—";
+    }
   }
 
   const filtered = useMemo(() => {

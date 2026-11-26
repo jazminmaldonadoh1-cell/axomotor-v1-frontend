@@ -1,6 +1,6 @@
 import { useState } from "react";
 import api from "../../api/client";
-import { LICENSE_CLASSES, PHONE_REGEX, ROLE_LABELS, get_error_text } from "./helpers";
+import { LICENSE_CLASSES, PHONE_REGEX, ROLE_LABELS, USERNAME_REGEX, get_error_text } from "./helpers";
 
 const EMPTY_FORM = {
   first_name: "",
@@ -43,8 +43,11 @@ export default function UserFormModal({ user, on_close, on_changed }) {
   }
 
   function validate() {
+    if (!USERNAME_REGEX.test(form.username.trim())) {
+      return "El nombre de usuario solo admite letras, números, puntos y guiones bajos.";
+    }
     if (!PHONE_REGEX.test(form.phone_number.trim())) {
-      return "El teléfono debe tener el formato +52-664-123-4567.";
+      return "El teléfono debe tener el formato +52 664-123-4567.";
     }
     if (is_driver) {
       if (!form.license_iss_date || !form.license_exp_date) {
@@ -204,7 +207,7 @@ export default function UserFormModal({ user, on_close, on_changed }) {
               <input
                 value={form.phone_number}
                 onChange={(e) => update("phone_number", e.target.value)}
-                placeholder="+52-664-123-4567"
+                placeholder="+52 664-123-4567"
                 maxLength={16}
                 required
               />

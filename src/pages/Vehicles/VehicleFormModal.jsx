@@ -22,11 +22,11 @@ function validate(form) {
   if (!Number.isInteger(year) || year <= 1900 || year > MAX_YEAR) {
     return `El año debe estar entre 1901 y ${MAX_YEAR}.`;
   }
-  if (form.plate_number.length < 8 || form.plate_number.length > 12) {
-    return "La placa debe tener entre 8 y 12 caracteres.";
+  if (form.plate_number.length < 7 || form.plate_number.length > 12) {
+    return "La placa debe tener entre 7 y 12 caracteres.";
   }
-  if (form.reg_number.length < 16 || form.reg_number.length > 22) {
-    return "El número de registro debe tener entre 16 y 22 caracteres.";
+  if (form.reg_number.length < 12 || form.reg_number.length > 22) {
+    return "El número de registro debe tener entre 12 y 22 caracteres.";
   }
   if (form.series_vin.length !== 17) {
     return "El VIN debe tener exactamente 17 caracteres.";
@@ -70,7 +70,7 @@ export default function VehicleFormModal({ vehicle, on_close, on_saved }) {
 
     let payload = clean;
     if (is_edit) {
-      
+
       payload = {};
       for (const [field, value] of Object.entries(clean)) {
         if (value !== vehicle[field]) payload[field] = value;

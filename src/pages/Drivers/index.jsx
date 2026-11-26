@@ -33,12 +33,12 @@ function get_error_text(err) {
 
 // Nombre completo e iniciales para el avatar
 function get_full_name(driver) {
-  return driver.user ? `${driver.user.first_name} ${driver.user.last_name}` : "—";
+  return driver.user ? `${driver.user.first_name} ${driver.user.last_name ?? ''}`.trimEnd() : "—";
 }
 
 function get_initials(driver) {
   if (!driver.user) return "?";
-  return `${driver.user.first_name.charAt(0)}${driver.user.last_name.charAt(0)}`.toUpperCase();
+  return `${driver.user.first_name.charAt(0)}${driver.user.last_name?.charAt(0) ?? ''}`.trimEnd().toUpperCase();
 }
 
 function StatusBadge({ driver }) {
@@ -58,16 +58,8 @@ export default function Drivers() {
   useEffect(() => {
     async function load_data() {
       try {
-        const [drivers_res, users_res] = await Promise.all([
-          api.get("/drivers/"),
-          api.get("/users/"),
-        ]);
-        const users_by_id = new Map(users_res.data.map((u) => [u.user_id, u]));
-        const merged = drivers_res.data.map((d) => ({
-          ...d,
-          user: users_by_id.get(d.user_id) ?? null,
-        }));
-        set_drivers(merged);
+        const drivers_res = await api.get("/drivers/")
+        set_drivers(drivers_res.data);
       } catch (err) {
         set_error(get_error_text(err));
       } finally {
@@ -194,8 +186,6 @@ function DriverPanel({ driver }) {
       <dl className="detail-list">
         <dt>Teléfono</dt>
         <dd>{user?.phone_number ?? "—"}</dd>
-        <dt>Usuario</dt>
-        <dd>{user?.username ?? "—"}</dd>
       </dl>
 
       <h3>Licencia de conducir</h3>
@@ -220,7 +210,7 @@ function DriverPanel({ driver }) {
         <dt>En servicio</dt>
         <dd>{driver.is_active ? "Sí" : "No"}</dd>
         <dt>Telegram</dt>
-        <dd>{driver.telegram_user_id ? "Vinculado" : "Sin vincular"}</dd>
+        <dd>{driver.has_linked_telegram_account ? "Vinculado" : "Sin vincular"}</dd>
         <dt>Registrado</dt>
         <dd>{format_date(driver.registered_at.slice(0, 10))}</dd>
       </dl>

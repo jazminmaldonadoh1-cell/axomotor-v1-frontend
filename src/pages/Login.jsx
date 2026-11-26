@@ -34,7 +34,7 @@ export default function Login() {
       <form className="login-card" onSubmit={handleSubmit}>
         <h1>AxoMotor</h1>
         <p>Inicia sesión para continuar</p>
-        <label>Usuario</label>
+        <label>Correo electrónico, usuario o teléfono</label>
         <input
           value={username}
           onChange={(e) => setUsername(e.target.value)}

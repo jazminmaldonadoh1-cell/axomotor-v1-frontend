@@ -29,7 +29,7 @@ export function AuthProvider({ children }) {
     const form = new URLSearchParams();
     form.append("username", username);
     form.append("password", password);
-    const { data } = await api.post("/users/token", form);
+    const { data } = await api.post("/auth/token", form);
     localStorage.setItem("token", data.access_token);
     setUser(userFromToken(data.access_token));
   }

@@ -3,8 +3,9 @@ import api from "../../api/client";
 import { useAuth } from "../../auth/AuthContext";
 import Icon from "../../components/Icon";
 
-// Formato del diccionario de datos: +XX-XXX-XXX-XXXX
-const PHONE_REGEX = /^\+\d{2}-\d{3}-\d{3}-\d{4}$/;
+// Formato del diccionario de datos: +XX XXX-XXX-XXXX
+const PHONE_REGEX = /^\+\d{1,2} \d{3}-\d{3}-\d{3,4}$/;
+const USERNAME_REGEX = /^[\d\w._]+$/;
 
 const ROLE_LABELS = {
   ADMIN: "Administrador",
@@ -64,6 +65,7 @@ export default function Account() {
   const [load_error, set_load_error] = useState("");
 
   // Formulario de correo y teléfono
+  const [username, set_username] = useState("");
   const [email, set_email] = useState("");
   const [phone_number, set_phone_number] = useState("");
   const [contact_msg, set_contact_msg] = useState(null);
@@ -81,14 +83,11 @@ export default function Account() {
   useEffect(() => {
     async function load_profile() {
       try {
-        const { data } = await api.get("/users/");
-        const me = data.find((u) => u.username === user.username);
-        if (!me) {
-          set_load_error("No se encontró tu cuenta.");
-          return;
-        }
+        const { me } = await api.get("/users/me");
+
         set_profile(me);
         set_email(me.email);
+        set_username(me.username);
         set_phone_number(me.phone_number);
       } catch (err) {
         set_load_error(get_error_text(err, "No se pudo cargar tu cuenta."));
@@ -103,17 +102,27 @@ export default function Account() {
     e.preventDefault();
     set_contact_msg(null);
 
+    // Valida el formato del nombre de usuario
+    if (!USERNAME_REGEX.test(username.trim())) {
+      set_contact_msg({
+        type: "error",
+        text: "El nombre de usuario solo admite letras, números, puntos y guiones bajos.",
+      });
+      return;
+    }
+
     // Valida el formato del teléfono
     if (!PHONE_REGEX.test(phone_number.trim())) {
       set_contact_msg({
         type: "error",
-        text: "El teléfono debe tener el formato +52-664-123-4567.",
+        text: "El teléfono debe tener el formato +52 664-123-4567.",
       });
       return;
     }
 
     // Solo se envían los campos que cambiaron
     const changes = {};
+    if (username.trim() !== profile.username) changes.username = username.trim();
     if (email.trim() !== profile.email) changes.email = email.trim();
     if (phone_number.trim() !== profile.phone_number)
       changes.phone_number = phone_number.trim();
@@ -163,7 +172,7 @@ export default function Account() {
 
     set_is_saving_password(true);
     try {
-      await api.put(`/users/${profile.user_id}/change_password`, {
+      await api.put(`/auth/change_password`, {
         current_password,
         new_password,
       });
@@ -198,7 +207,7 @@ export default function Account() {
   const strength_label = ["", "Débil", "Media", "Fuerte"][score];
   const password_type = show_passwords ? "text" : "password";
 
-  const initials = `${profile.first_name.charAt(0)}${profile.last_name.charAt(0)}`.toUpperCase();
+  const initials = `${profile.first_name.charAt(0)}${profile.last_name?.charAt(0) ?? ''}`.trimEnd().toUpperCase();
 
   return (
     <div className="page">
@@ -241,6 +250,14 @@ export default function Account() {
             title="Datos de contacto"
             text="Los usamos para avisarte de alertas y recuperar tu cuenta."
           />
+          <Field label="Nombre de usuario" icon="account">
+            <input
+              value={username}
+              onChange={(e) => set_username(e.target.value)}
+              maxLength={16}
+              required
+            />
+          </Field>
           <Field label="Correo electrónico" icon="mail">
             <input
               type="email"
@@ -254,12 +271,12 @@ export default function Account() {
             <input
               value={phone_number}
               onChange={(e) => set_phone_number(e.target.value)}
-              placeholder="+52-664-123-4567"
+              placeholder="+52 664-123-4567"
               maxLength={16}
               required
             />
           </Field>
-          <span className="field-hint">Formato: +52-664-123-4567</span>
+          <span className="field-hint">Formato: +52 664-123-4567</span>
           {contact_msg && (
             <div className={contact_msg.type === "ok" ? "success" : "error"}>
               {contact_msg.text}

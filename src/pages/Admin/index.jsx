@@ -22,9 +22,7 @@ export default function Admin() {
       ]);
       const users_by_id = new Map(users_res.data.map((u) => [u.user_id, u]));
       set_users(users_res.data);
-      set_drivers(
-        drivers_res.data.map((d) => ({ ...d, user: users_by_id.get(d.user_id) ?? null }))
-      );
+      set_drivers(drivers_res.data);
       set_error("");
     } catch (err) {
       set_error(get_error_text(err, "No se pudo cargar la información."));

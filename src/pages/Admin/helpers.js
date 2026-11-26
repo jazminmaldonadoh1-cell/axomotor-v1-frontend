@@ -8,8 +8,9 @@ export const ROLE_LABELS = {
 // Valores de LicenseClass del backend
 export const LICENSE_CLASSES = ["A", "A1", "A2", "B", "C", "D", "E"];
 
-// Formato del diccionario de datos: +XX-XXX-XXX-XXXX
-export const PHONE_REGEX = /^\+\d{2}-\d{3}-\d{3}-\d{4}$/;
+// Formato del diccionario de datos: +XX XXX-XXX-XXXX
+export const PHONE_REGEX = /^\+\d{1,2} \d{3}-\d{3}-\d{3,4}$/;
+export const USERNAME_REGEX = /^[\d\w._]+$/;
 
 // Convierte "2027-03-15" en fecha local (evita desfase por zona horaria)
 function parse_date(value) {
