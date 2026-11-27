@@ -7,13 +7,15 @@ import { format_datetime, load_error_text, point_to_latlng } from "../../utils/f
 
 const SEVERITY_FILTERS = [
   { key: "ALL", label: "Todos" },
-  { key: "DANGER", label: "Peligro" },
-  { key: "WARNING", label: "Advertencia" },
+  { key: "CRITICAL", label: "Críticos" },
+  { key: "HIGH", label: "Altos" },
+  { key: "MEDIUM", label: "Medios" },
+  { key: "LOW", label: "Bajos" },
   { key: "INFO", label: "Informativos" },
 ];
 
 
-const SEVERITY_COLOR = { DANGER: "#d93c42", WARNING: "#e0a21f", INFO: "#1456a0" };
+const SEVERITY_COLOR = { CRITICAL: "#d93c42", MEDIUM: "#e0a21f", INFO: "#1456a0" };
 
 
 export default function EventsTab() {
@@ -121,8 +123,8 @@ export default function EventsTab() {
               <>
                 <MapView height={480} markers={visible_markers} />
                 <div className="map-legend">
-                  <span><i style={{ background: SEVERITY_COLOR.DANGER }} />Peligro</span>
-                  <span><i style={{ background: SEVERITY_COLOR.WARNING }} />Advertencia</span>
+                  <span><i style={{ background: SEVERITY_COLOR.CRITICAL }} />Crítico</span>
+                  <span><i style={{ background: SEVERITY_COLOR.MEDIUM }} />Medio</span>
                   <span><i style={{ background: SEVERITY_COLOR.INFO }} />Informativo</span>
                   {selected_id && (
                     <button className="link-btn" onClick={() => set_selected_id(null)}>

@@ -46,8 +46,7 @@ export function resolve_trip(trip, lookups) {
 }
 
 export function driver_name(driver) {
-  if (!driver?.user) return "—";
-  return `${driver.user.first_name} ${driver.user.last_name}`;
+  return `${driver.first_name} ${driver.last_name ?? ''}`.trimEnd();
 }
 
 export function vehicle_name(vehicle) {

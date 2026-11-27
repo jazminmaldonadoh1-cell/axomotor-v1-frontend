@@ -16,14 +16,8 @@ import {
 const REFRESH_MS = 15000;
 
 async function fetch_trip_positions(trip) {
-  try {
-    const { data } = await api.get(`/trips/${trip.trip_id}/positions`);
-    return data;
-  } catch (err) {
-    if (!is_missing_endpoint(err)) throw err;
-    const { data } = await api.get(`/vehicles/${trip.vehicle_id}/positions`);
-    return data.filter((p) => p.trip_id === trip.trip_id);
-  }
+  const { data } = await api.get(`/tracking/positions?trip_id=${trip.trip_id}`);
+  return data;
 }
 
 export default function TripPanel({ trip, lookups, on_close }) {
@@ -37,7 +31,7 @@ export default function TripPanel({ trip, lookups, on_close }) {
   const load_positions = useCallback(async () => {
     try {
       const data = await fetch_trip_positions(trip);
-      
+
       const sorted = [...data].sort((a, b) => new Date(a.registered_at) - new Date(b.registered_at));
       set_positions(sorted);
       set_updated_at(new Date());
@@ -59,7 +53,6 @@ export default function TripPanel({ trip, lookups, on_close }) {
   const path = positions.map((p) => point_to_latlng(p.geojson)).filter(Boolean);
   const last = positions[positions.length - 1];
 
- 
   const origin_area = polygon_to_latlngs(lookups?.locations.get(trip.origin_id)?.geojson);
   const destination_area = polygon_to_latlngs(lookups?.locations.get(trip.destination_id)?.geojson);
 

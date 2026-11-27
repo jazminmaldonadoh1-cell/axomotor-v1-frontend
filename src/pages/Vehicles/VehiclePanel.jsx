@@ -115,10 +115,10 @@ function InfoTab({ vehicle, can_edit, on_edit }) {
 
 function use_vehicle_list(url, vehicle_id) {
   const [items, set_items] = useState([]);
-  const [state, set_state] = useState("loading"); 
+  const [state, set_state] = useState("loading");
 
   useEffect(() => {
-    
+
     api
       .get(url, { params: { vehicle_id } })
       .then(({ data }) => {
@@ -269,10 +269,10 @@ function LocationTab({ vehicle_id }) {
 
   useEffect(() => {
     api
-      .get(`/vehicles/${vehicle_id}/positions`)
+      .get(`/tracking/positions?vehicle_id=${vehicle_id}`)
       .then(({ data }) => {
-        
-        set_positions(data.slice(0, 50).reverse());
+
+        set_positions(data);
         set_state("ready");
       })
       .catch(() => set_state("error"));

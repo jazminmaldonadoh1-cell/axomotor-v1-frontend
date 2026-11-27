@@ -45,7 +45,9 @@ export const PRIORITY = {
 
 export const SEVERITY = {
   INFO: { label: "Informativo", css: "badge-blue" },
-  WARNING: { label: "Advertencia", css: "badge-yellow" },
+  LOW: { label: "Bajo", css: "badge-cyan" },
+  MEDIUM: { label: "Medio", css: "badge-yellow" },
+  HIGH: { label: "Advertencia", css: "badge-orange" },
   DANGER: { label: "Peligro", css: "badge-red" },
 };
 

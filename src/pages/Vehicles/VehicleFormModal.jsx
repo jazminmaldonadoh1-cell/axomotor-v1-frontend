@@ -159,7 +159,7 @@ export default function VehicleFormModal({ vehicle, on_close, on_saved }) {
           <div className="form-grid">
             <label>
               <span>
-                Placa <span className="form-hint">(8 a 12 caracteres)</span>
+                Placa <span className="form-hint">(7 a 12 caracteres)</span>
               </span>
               <input
                 value={form.plate_number}
@@ -181,7 +181,7 @@ export default function VehicleFormModal({ vehicle, on_close, on_saved }) {
             </label>
             <label className="span-2">
               <span>
-                No. de registro <span className="form-hint">(16 a 22 caracteres)</span>
+                No. de registro <span className="form-hint">(12 a 22 caracteres)</span>
               </span>
               <input
                 value={form.reg_number}

@@ -329,6 +329,10 @@ body {
 .badge-red { background: #fbe4e4; color: #9b1c1c; }
 .badge-blue { background: #e3eefb; color: #1456a0; }
 .badge-gray { background: #efe8ea; color: #6d5a61; }
+.badge-teal { background: #dcefeb; color: #1f655b; }
+.badge-purple { background: #eee7f6; color: #5a3b7a; }
+.badge-orange { background: #ffecd9; color: #8a4b16; }
+.badge-cyan { background: #dff1f4; color: #1f6070; }
 
 /* ===== Conductores: tabla + panel ===== */
 .drivers-layout { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }

@@ -83,7 +83,8 @@ export default function Account() {
   useEffect(() => {
     async function load_profile() {
       try {
-        const { me } = await api.get("/users/me");
+        const user_res = await api.get("/users/me");
+        const me = user_res.data
 
         set_profile(me);
         set_email(me.email);

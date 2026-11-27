@@ -127,13 +127,13 @@ export default function IncidentPanel({
 
 function MediaGallery({ incident_id }) {
   const [media, set_media] = useState([]);
-  const [state, set_state] = useState("loading"); 
+  const [state, set_state] = useState("loading");
 
   useEffect(() => {
     api
-      .get(`/incidents/${incident_id}/media`)
+      .get(`/incidents/${incident_id}`)
       .then(({ data }) => {
-        set_media([...data].sort((a, b) => new Date(a.captured_at) - new Date(b.captured_at)));
+        set_media([...data.media_files]);
         set_state("ready");
       })
       // FastAPI responde 404 "Not Found" cuando la ruta no existe todavía
@@ -154,14 +154,14 @@ function MediaGallery({ incident_id }) {
   return (
     <div className="media-grid">
       {media.map((m) => (
-        <a key={m.media_id} className="media-item" href={m.file_url} target="_blank" rel="noreferrer">
+        <a key={m.file_id} className="media-item" href={m.file_url} target="_blank" rel="noreferrer">
           {m.type === "VIDEO" ? (
             <video src={m.file_url} controls preload="metadata" onClick={(e) => e.preventDefault()} />
           ) : (
             <img src={m.file_url} alt="Captura de la incidencia" loading="lazy" />
           )}
           <span>
-            {m.type === "VIDEO" ? "Video" : "Foto"} · {format_datetime(m.captured_at)}
+            {m.type === "VIDEO" ? "Video" : "Foto"} · {format_datetime(m.uploaded_at)}
           </span>
         </a>
       ))}
@@ -190,7 +190,7 @@ function ManageForm({ incident, on_updated }) {
     set_error("");
     set_success("");
 
-    
+
     const changes = {};
     if (form.status !== incident.status) changes.status = form.status;
     if (form.priority !== incident.priority) changes.priority = form.priority;
